@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+    <property>
+        <name>hbase.rootdir</name>
+        <value>{{ hbase_data_dir }}</value>
+    </property>
+    <property>
+        <name>hbase.cluster.distributed</name>
+        <value>{{ hbase_distributed }}</value>
+    </property>
+    <property>
+        <name>hbase.zookeeper.quorum</name>
+        <value>{{ hbase_zookeepers|join(',') }}</value>
+    </property>
+</configuration>

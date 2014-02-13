@@ -1,0 +1,8 @@
+---
+hbase_version: 0.94.16
+hbase_data_dir: /opt/hbase-data
+hbase_install_dir: /opt/hbase
+hbase_archive: hbase-{{hbase_version}}.tar.gz
+hbase_distributed: false
+hbase_zookeepers: 
+  - localhost

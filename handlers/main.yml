@@ -1,0 +1,8 @@
+---
+- name: restart hbase
+  supervisorctl: name=hbase state=restarted
+  sudo: yes
+
+- name: restart hbase-thrift
+  supervisorctl: name=hbase-thrift state=restarted
+  sudo: yes

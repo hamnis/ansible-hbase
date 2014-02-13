@@ -1,0 +1,44 @@
+---
+- name: download HBase release {{ hbase_version }}
+  get_url: url='http://apache.vianett.no/hbase/hbase-{{ hbase_version }}/{{ hbase_archive }}' dest='/tmp/{{ hbase_archive }}'
+
+- name: create HBase-related directories
+  file: path='{{ item }}' state=directory owner=hbase group=hbase
+  with_items:
+    - '{{ hbase_data_dir }}'
+    - '{{ hbase_install_dir }}/logs'
+  sudo: yes
+
+- name: extract HBase archive
+  command: tar xzf /tmp/{{ hbase_archive }} -C {{hbase_install_dir}} --strip-components 1 creates={{ hbase_install_dir }}/bin
+  sudo: yes
+  register: extracted
+
+- name: write HBase config file
+  template: src=conf/hbase-site.xml.j2 dest='{{ hbase_install_dir }}/conf/hbase-site.xml' owner=hbase group=hbase  mode=0644
+  when: extracted.changed
+
+- name: Copy hbase-env
+  template: dest={{ hbase_install_dir }}/conf/hbase-env.sh src=conf/hbase-env.sh.j2 owner=hbase group=hbase mode=0644
+  when: extracted.changed
+
+- name: Make sure permissions are correct 
+  file: path='{{ hbase_install_dir }}' state=directory owner=hbase group=hbase recurse=yes
+
+- name: Install hbase supervisor script
+  template: dest=/etc/supervisor/conf.d/hbase.conf src=supervisor/hbase.conf.j2 owner=root group=root mode=0644
+  notify: restart supervisor
+
+- name: Install hbase-thrift supervisor script
+  template: dest=/etc/supervisor/conf.d/hbase-thrift.conf src=supervisor/hbase-thrift.conf.j2 owner=root group=root mode=0644
+  notify: restart supervisor
+
+- name: start hbase
+  supervisorctl: name=hbase state=restarted
+  sudo: yes
+  when: extracted.changed
+
+- name: start hbase-thrift
+  supervisorctl: name=hbase-thrift state=restarted
+  sudo: yes
+  when: extracted.changed

@@ -1,0 +1,6 @@
+---
+- name: create hbase group
+  group: name=hbase system=yes
+
+- name: Create hbase user
+  user: name=hbase group=hbase system=yes home={{hbase_install_dir}} createhome=yes
