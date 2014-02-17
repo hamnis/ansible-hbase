@@ -7,10 +7,18 @@
     </property>
     <property>
         <name>hbase.cluster.distributed</name>
-        <value>{{ hbase_distributed }}</value>
+        <value>false</value>
     </property>
     <property>
         <name>hbase.zookeeper.quorum</name>
         <value>{{ hbase_zookeepers|join(',') }}</value>
+    </property>
+    <property>
+        <name>hbase.zookeeper.property.clientPort</name>
+        <value>{{ hbase_zookeeper_client_port }}</value>
+    </property>
+    <property>
+        <name>hbase.zookeeper.property.dataDir</name>
+        <value>{{hbase_zookeeper_data_dir}}</value>
     </property>
 </configuration>

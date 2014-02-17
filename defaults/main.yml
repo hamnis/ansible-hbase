@@ -1,7 +1,10 @@
 ---
 hbase_version: 0.94.16
-hbase_data_dir: /opt/hbase-data
+hbase_data_dir: /var/opt/hbase
 hbase_install_dir: /opt/hbase
+hbase_zookeeper_data_dir: /var/opt/zookeeper
+hbase_zookeeper_client_port: 2181
+hbase_logs_dir: /var/log/hbase
 hbase_archive: hbase-{{hbase_version}}.tar.gz
 hbase_distributed: false
 hbase_zookeepers: 
