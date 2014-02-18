@@ -6,3 +6,22 @@
 - name: Create hbase user
   user: name=hbase group=hbase system=yes home={{hbase_install_dir}} createhome=yes shell=/bin/bash
   sudo: yes
+
+#- name: create SSH config
+#  template: src=ssh-config.j2 dest=/home/vagrant/.ssh/config
+
+- name: Create .ssh folder
+  file: path=/home/hbase/.ssh owner=hbase group=hbase state=directory
+  sudo: yes
+
+- name: create SSH key pair for Hadoop
+  sudo: yes
+  command: creates='/home/hbase/.ssh/id_rsa.pub' ssh-keygen -t rsa -N "" -C "for Hadoop" -f '/home/hbase/.ssh/id_rsa'
+
+- name: add generated key to authorized_keys
+  sudo: yes
+  shell: 'if grep -q Hadoop /home/hbase/.ssh/authorized_keys; then echo "public key already added"; else cat /home/hbase/.ssh/id_rsa.pub >> /home/hbase/.ssh/authorized_keys; fi'
+
+- name: Ensure permissions on authorized_keys file
+  file: path=/home/hbase/.ssh/authorized_keys owner=hbase group=hbase mode=0600
+  sudo: yes

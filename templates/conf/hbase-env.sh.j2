@@ -102,7 +102,7 @@ export HBASE_LOG_DIR={{hbase_logs_dir}}
 # export HBASE_ZOOKEEPER_OPTS="$HBASE_ZOOKEEPER_OPTS -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8073"
 
 # A string representing this instance of hbase. $USER by default.
-export HBASE_IDENT_STRING=$USER-{{ansible_hostname}}
+#export HBASE_IDENT_STRING=$USER-{{ansible_hostname}}
 
 # The scheduling priority for daemon processes.  See 'man nice'.
 # export HBASE_NICENESS=10
@@ -116,4 +116,4 @@ export HBASE_PID_DIR=/var/run/hbase
 # export HBASE_SLAVE_SLEEP=0.1
 
 # Tell HBase whether it should manage it's own instance of Zookeeper or not.
-export HBASE_MANAGES_ZK=true
+export HBASE_MANAGES_ZK=false

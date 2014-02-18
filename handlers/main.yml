@@ -1,8 +1,10 @@
 ---
-- name: restart hbase
-  supervisorctl: name=hbase state=restarted
+- name: restart hbase-master
+  service: name=hbase-master state=restarted
   sudo: yes
+  notify: 
+    - restart hbase-regionserver
 
-- name: restart hbase-thrift
-  supervisorctl: name=hbase-thrift state=restarted
+- name: restart hbase-regionserver
+  service: name=hbase-regionserver state=restarted
   sudo: yes

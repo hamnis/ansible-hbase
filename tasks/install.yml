@@ -14,7 +14,19 @@
 - name: extract HBase archive
   command: tar xzf /tmp/{{ hbase_archive }} -C {{hbase_install_dir}} --strip-components 1 creates={{ hbase_install_dir }}/bin
   sudo: yes
-  register: extracted
+
+- name: Make sure permissions are correct 
+  file: path={{ hbase_install_dir }} state=directory owner=hbase group=hbase recurse=yes
+  sudo: yes
+
+- name: Install hbase init scripts
+  template: dest=/etc/init.d/{{ item }} src=init.d/{{item}}.j2 owner=root group=root mode=0755
+  with_items:
+    - hbase-master
+    - hbase-regionserver
+  sudo: yes
+  notify: 
+    - restart hbase-master
 
 - name: write HBase config files
   template: src=conf/{{ item }}.j2 dest={{ hbase_install_dir }}/conf/{{ item }} owner=hbase group=hbase mode=0644
@@ -22,16 +34,5 @@
     - hbase-site.xml
     - hbase-env.sh
   sudo: yes
-  when: extracted.changed
-
-- name: Make sure permissions are correct 
-  file: path={{ hbase_install_dir }} state=directory owner=hbase group=hbase recurse=yes
-  sudo: yes
-
-- name: Install hbase supervisor scripts
-  template: dest=/etc/supervisor/conf.d/{{ item }} src=supervisor/{{item}}.j2 owner=root group=root mode=0644
-  with_items:
-    - hbase.conf
-    - hbase-thrift.conf
-  sudo: yes
-  notify: restart supervisor
+  notify: 
+    - restart hbase-master

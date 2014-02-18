@@ -7,7 +7,7 @@
     </property>
     <property>
         <name>hbase.cluster.distributed</name>
-        <value>false</value>
+        <value>true</value>
     </property>
     <property>
         <name>hbase.zookeeper.quorum</name>
@@ -21,4 +21,13 @@
         <name>hbase.zookeeper.property.dataDir</name>
         <value>{{hbase_zookeeper_data_dir}}</value>
     </property>
+    <property>
+        <name>hbase.master.ipc.address</name>
+        <value>{{hbase_bind_ip}}</value>
+    </property>
+        <property>
+        <name>hbase.regionserver.ipc.address</name>
+        <value>{{hbase_bind_ip}}</value>
+    </property>
+
 </configuration>
