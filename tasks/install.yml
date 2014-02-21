@@ -36,3 +36,9 @@
   sudo: yes
   notify: 
     - restart hbase-master
+
+- name: Register services
+  service: name={{item}} enabled=yes
+  with_items:
+    - hbase-master
+    - hbase-regionserver

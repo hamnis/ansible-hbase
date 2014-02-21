@@ -9,4 +9,4 @@ hbase_archive: hbase-{{hbase_version}}.tar.gz
 hbase_bind_ip: "0.0.0.0"
 hbase_bind_interface: eth0
 hbase_zookeepers: 
-  - "{{ansible_hostname}}"
+  - "{{ansible_fqdn}}"
